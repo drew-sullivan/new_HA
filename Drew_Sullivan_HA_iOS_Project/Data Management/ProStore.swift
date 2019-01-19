@@ -39,7 +39,7 @@ public class ProStore {
         self.filteredGroups = filteredGroups
     }
     
-    //MARK: - Sorting
+    // MARK: - Sorting
     func sortGroupContents(by sortingType: SortingType) {
         for group in groups {
             switch sortingType {
@@ -61,7 +61,7 @@ public class ProStore {
         }
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
@@ -78,13 +78,13 @@ public class ProStore {
     }
     
     private func organizeIntoGroups(_ pros: [Pro]) -> [Group] {
-        //Group pros by specialty
+        // Group pros by specialty
         var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
             groupedPros[pro.specialty, default: [Pro]()].append(pro)
         }
         
-        //Transform dict into Group objects
+        // Transform dict into Group objects
         var groups = [Group]()
         let sortedKeys = groupedPros.keys.sorted()
         for groupName in sortedKeys {

@@ -10,18 +10,10 @@ import UIKit
 
 class ProsTableViewController: UITableViewController {
     
-    var proStore: ProStore!
-    private var searchController: UISearchController!
-    
-    //MARK: - IBOutlets
     @IBOutlet var sortButton: UIBarButtonItem!
     
-    //MARK: - IBActions
-    @IBAction func sort(_ sender: UIBarButtonItem) {
-        let sortingAlertController = configureSortingAlertController()
-        present(sortingAlertController, animated: true)
-    }
-    
+    var proStore: ProStore!
+    private var searchController: UISearchController!
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -37,7 +29,13 @@ class ProsTableViewController: UITableViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    //MARK: - UITableViewController
+    // MARK: - IBActions
+    @IBAction func sort(_ sender: UIBarButtonItem) {
+        let sortingAlertController = configureSortingAlertController()
+        present(sortingAlertController, animated: true)
+    }
+    
+    // MARK: - UITableViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
         
@@ -81,7 +79,7 @@ class ProsTableViewController: UITableViewController {
         }
     }
     
-    //MARK: - Helpers for Filtering
+    // MARK: - Helpers for Filtering
     private func getGroupsWithCheckForFiltering() -> [Group] {
         if userIsCurrentlyFiltering() {
             return proStore.filteredGroups
@@ -89,7 +87,7 @@ class ProsTableViewController: UITableViewController {
         return proStore.groups
     }
     
-    //MARK: - Helpers for Configuring
+    // MARK: - Helpers for Configuring
     private func configureSearchController() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -135,7 +133,7 @@ class ProsTableViewController: UITableViewController {
     }
 }
 
-//MARK: - UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating
 extension ProsTableViewController: UISearchResultsUpdating {
     
     private func userIsCurrentlyFiltering() -> Bool {
