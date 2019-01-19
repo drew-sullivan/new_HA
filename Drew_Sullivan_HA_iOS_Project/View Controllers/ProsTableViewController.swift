@@ -66,12 +66,22 @@ class ProsTableViewController: UITableViewController {
     
     // MARK: - TableView
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return proStore.numPros
+        if userIsCurrentlyFiltering() {
+            return proStore.getFilteredPros().count
+        }
+        return proStore.getPros().count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
-        let pro = proStore.pro(forIndex: indexPath.row)
+        
+        var pro: Pro
+        if userIsCurrentlyFiltering() {
+            let filteredPros = proStore.getFilteredPros()
+            pro = filteredPros[indexPath.row]
+        } else {
+            pro = proStore.pro(forIndex: indexPath.row)
+        }
         
         cell.proNameLabel.text = pro.companyName
         cell.ratingInfoLabel.text = pro.ratingInformation
@@ -96,7 +106,25 @@ class ProsTableViewController: UITableViewController {
 }
 
 extension ProsTableViewController: UISearchResultsUpdating {
+    
+    func userIsCurrentlyFiltering() -> Bool {
+        return searchController.isActive && !isSearchBarEmpty()
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
-        // todo
+        filterProsBySearchText(searchController.searchBar.text!)
+    }
+    
+    func isSearchBarEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterProsBySearchText(_ searchText: String, scope: String = "All") {
+        let filteredPros = proStore.getPros().filter { (pro: Pro) -> Bool in
+            return pro.companyName.lowercased().contains(searchText.lowercased())
+        }
+        proStore.setFilteredPros(filteredPros)
+        
+        tableView.reloadData()
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 public class ProStore {
     
     private var pros = [Pro]()
+    private var filteredPros = [Pro]()
     
     private init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
@@ -30,6 +31,26 @@ public class ProStore {
         return pros[index]
     }
     
+    public func getPros() -> [Pro] {
+        return pros
+    }
+    
+    //MARK: - Filtering
+    
+    public func getFilteredPros() -> [Pro] {
+        return filteredPros
+    }
+    
+    public func filteredPro(forIndex index: Int) -> Pro {
+        return filteredPros[index]
+    }
+    
+    public func setFilteredPros(_ filteredPros: [Pro]) {
+        self.filteredPros = filteredPros
+    }
+    
+    //MARK: - Sorting
+    
     public func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
@@ -48,6 +69,8 @@ public class ProStore {
             }
         }
     }
+    
+    //MARK: - Helpers
     
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {
