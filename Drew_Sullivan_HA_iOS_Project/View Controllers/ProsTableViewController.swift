@@ -65,7 +65,7 @@ class ProsTableViewController: UITableViewController {
         }
     }
     
-    //MARK: - Helpers
+    //MARK: - Helpers for Filtering
     private func getProWithCheckForFiltering(index: Int) -> Pro {
         if userIsCurrentlyFiltering() {
             return proStore.filteredPro(forIndex: index)
@@ -89,6 +89,7 @@ class ProsTableViewController: UITableViewController {
         }
     }
     
+    //MARK: - Helpers for Configuring
     private func configureSearchController() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
