@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A29FE5621F389F60000F1FA /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29FE5521F389F60000F1FA /* Group.swift */; };
 		3A29FE5B21F3E2090000F1FA /* ProCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29FE5A21F3E2090000F1FA /* ProCellViewModel.swift */; };
+		3A29FE5D21F3E6A30000F1FA /* ProCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29FE5C21F3E6A30000F1FA /* ProCellViewModelTests.swift */; };
 		3A56507721D517D300B764D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A56507621D517D300B764D3 /* AppDelegate.swift */; };
 		3A56507C21D517D300B764D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A56507A21D517D300B764D3 /* Main.storyboard */; };
 		3A56507E21D517D400B764D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A56507D21D517D400B764D3 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		3A29FE5521F389F60000F1FA /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		3A29FE5A21F3E2090000F1FA /* ProCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCellViewModel.swift; sourceTree = "<group>"; };
+		3A29FE5C21F3E6A30000F1FA /* ProCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCellViewModelTests.swift; sourceTree = "<group>"; };
 		3A56507321D517D300B764D3 /* Drew_Sullivan_HA_iOS_Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Drew_Sullivan_HA_iOS_Project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A56507621D517D300B764D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A56507B21D517D300B764D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				3ACA675221D7C77400AE99E5 /* ProStoreTests.swift */,
 				3A56508B21D517D400B764D3 /* ProTests.swift */,
 				3ACA675821D80BE100AE99E5 /* ProsTableViewControllerTests.swift */,
+				3A29FE5C21F3E6A30000F1FA /* ProCellViewModelTests.swift */,
 				3A56508D21D517D400B764D3 /* Info.plist */,
 			);
 			path = Drew_Sullivan_HA_iOS_ProjectTests;
@@ -349,6 +352,7 @@
 			files = (
 				3ACA675321D7C77400AE99E5 /* ProStoreTests.swift in Sources */,
 				3A56508C21D517D400B764D3 /* ProTests.swift in Sources */,
+				3A29FE5D21F3E6A30000F1FA /* ProCellViewModelTests.swift in Sources */,
 				3ACA675921D80BE100AE99E5 /* ProsTableViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

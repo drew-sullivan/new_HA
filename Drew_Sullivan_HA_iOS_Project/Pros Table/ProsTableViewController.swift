@@ -13,8 +13,10 @@ class ProsTableViewController: UITableViewController {
     var proStore: ProStore!
     private var searchController: UISearchController!
     
+    //MARK: - IBOutlets
     @IBOutlet var sortButton: UIBarButtonItem!
     
+    //MARK: - IBActions
     @IBAction func sort(_ sender: UIBarButtonItem) {
         let sortingAlertController = configureSortingAlertController()
         present(sortingAlertController, animated: true)

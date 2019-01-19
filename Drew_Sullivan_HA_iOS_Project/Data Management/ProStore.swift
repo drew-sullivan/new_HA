@@ -10,10 +10,16 @@ import UIKit
 
 public class ProStore {
     
-    var pros = [Pro]()
-    var filteredPros = [Pro]()
     var groups = [Group]()
     var filteredGroups = [Group]()
+    
+    var pros: [Pro] {
+        var pros = [Pro]()
+        for group in groups {
+            pros.append(contentsOf: group.pros)
+        }
+        return pros
+    }
 
     var numPros: Int {
         return groups.reduce(0) { $0 + $1.pros.count }
@@ -23,13 +29,13 @@ public class ProStore {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
     }
     
-    public static let shared: ProStore = {
+    static let shared: ProStore = {
         let instance = ProStore()
         return instance
     }()
     
     func updateGroups(withPros pros: [Pro]) {
-        let filteredGroups = groupProsBySpecialty(prosToGroup: pros)
+        let filteredGroups = organizeIntoGroups(pros)
         self.filteredGroups = filteredGroups
     }
     
@@ -60,8 +66,8 @@ public class ProStore {
         do {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
-                pros = try JSONDecoder().decode([Pro].self, from: data)
-                let groups = groupProsBySpecialty(prosToGroup: pros)
+                let pros = try JSONDecoder().decode([Pro].self, from: data)
+                let groups = organizeIntoGroups(pros)
                 self.groups = groups
             } else {
                 print("No file at that location")
@@ -71,7 +77,7 @@ public class ProStore {
         }
     }
     
-    private func groupProsBySpecialty(prosToGroup pros: [Pro]) -> [Group] {
+    private func organizeIntoGroups(_ pros: [Pro]) -> [Group] {
         //Group pros by specialty
         var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
@@ -92,7 +98,7 @@ public class ProStore {
     
 }
 
-public enum SortingType: String {
+enum SortingType: String {
     case companyName = "Company Name"
     case rating = "Rating"
     case numRatings = "Number of Ratings"

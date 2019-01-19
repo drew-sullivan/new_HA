@@ -31,11 +31,6 @@ class ProsTableViewControllerTests: XCTestCase {
         
         super.tearDown()
     }
-    
-    func testNumberOfRowsInSection() {
-        let numPros = vc.proStore.numPros
-        XCTAssert(numPros == vc.tableView(vc.tableView, numberOfRowsInSection: 0), "Number of rows in ProStore does not match number or rows in TableView")
-    }
 
     func testCellForRowAt() {
         XCTAssertNotNil(vc.view, "Problem initializing view")

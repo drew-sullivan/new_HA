@@ -10,15 +10,27 @@ import XCTest
 
 @testable import Drew_Sullivan_HA_iOS_Project
 
-class Drew_Sullivan_HA_iOS_ProjectTests: XCTestCase {
+class ProTests: XCTestCase {
     
     var pro: Pro!
     
     override func setUp() {
         super.setUp()
         
-        let proStore = ProStore.shared
-        pro = proStore.pro(forIndex: 0)
+        pro = Pro(entityId: "FakeID",
+                  companyName: "Fake Company Name",
+                  ratingCount: "6",
+                  compositeRating: "4.24",
+                  companyOverview: "Fake overview",
+                  canadianSP: true,
+                  spanishSpeaking: true,
+                  phoneNumber: "1234567890",
+                  latitude: nil,
+                  longitude: nil,
+                  servicesOffered: nil,
+                  specialty: "Plumbing",
+                  primaryLocation: "Golden, CO",
+                  email: "biz@fakecompany.com")
     }
 
     override func tearDown() {
@@ -46,28 +58,6 @@ class Drew_Sullivan_HA_iOS_ProjectTests: XCTestCase {
         let populatedService = "Any service"
         pro.servicesOffered = populatedService
         XCTAssert(pro.serviceInformation == populatedService)
-    }
-
-    func testRatingInfoColorSetProperly() {
-        let rating4AndAbove = "4.0"
-        pro.compositeRating = rating4AndAbove
-        XCTAssert(pro.ratingInfoColor == UIColor.green, "Color should be green")
-        
-        let rating3AndAbove = "3.0"
-        pro.compositeRating = rating3AndAbove
-        XCTAssert(pro.ratingInfoColor == UIColor.orange, "Color should be orange")
-        
-        let ratingUnder3 = "2.9"
-        pro.compositeRating = ratingUnder3
-        XCTAssert(pro.ratingInfoColor == UIColor.red, "Color should be red")
-        
-        let rating0 = "0.0"
-        pro.compositeRating = rating0
-        XCTAssert(pro.ratingInfoColor == UIColor.black, "Color should be black")
-        
-        let ratingNotANumber = "Not a number"
-        pro.compositeRating = ratingNotANumber
-        XCTAssert(pro.ratingInfoColor == UIColor.black, "Color should be black")
     }
 
 }
