@@ -39,22 +39,4 @@ public struct Pro: Decodable {
             return "Services Not Available"
         }
     }
-    
-    var ratingInfoColor: UIColor {
-        if let rating = Double(compositeRating), rating > 0 {
-            return getRatingInfoColor(rating: rating)
-        } else {
-            return UIColor.black
-        }
-    }
-    
-    private func getRatingInfoColor(rating num: Double) -> UIColor {
-        if num >= 4.0 {
-            return UIColor.green
-        } else if num >= 3.0 {
-            return UIColor.orange
-        } else {
-            return UIColor.red
-        }
-    }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A29FE5621F389F60000F1FA /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29FE5521F389F60000F1FA /* Group.swift */; };
+		3A29FE5B21F3E2090000F1FA /* ProCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29FE5A21F3E2090000F1FA /* ProCellViewModel.swift */; };
 		3A56507721D517D300B764D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A56507621D517D300B764D3 /* AppDelegate.swift */; };
 		3A56507C21D517D300B764D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A56507A21D517D300B764D3 /* Main.storyboard */; };
 		3A56507E21D517D400B764D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A56507D21D517D400B764D3 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		3A29FE5521F389F60000F1FA /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		3A29FE5A21F3E2090000F1FA /* ProCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCellViewModel.swift; sourceTree = "<group>"; };
 		3A56507321D517D300B764D3 /* Drew_Sullivan_HA_iOS_Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Drew_Sullivan_HA_iOS_Project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A56507621D517D300B764D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A56507B21D517D300B764D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -90,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A29FE5721F3E0100000F1FA /* Pros Table */ = {
+			isa = PBXGroup;
+			children = (
+				3A78B64521D5BC93006749E7 /* Cells */,
+				3A56509D21D51D9300B764D3 /* ProsTableViewController.swift */,
+			);
+			path = "Pros Table";
+			sourceTree = "<group>";
+		};
 		3A56506A21D517D300B764D3 = {
 			isa = PBXGroup;
 			children = (
@@ -115,7 +126,8 @@
 			children = (
 				3A78B64721D5BD11006749E7 /* Storyboards */,
 				3A78B64621D5BCDD006749E7 /* Data Management */,
-				3A78B64421D5BC80006749E7 /* View Controllers */,
+				3A29FE5721F3E0100000F1FA /* Pros Table */,
+				3A78B64421D5BC80006749E7 /* Pro Details */,
 				3A78B64321D5BC6D006749E7 /* Models */,
 				3A56507621D517D300B764D3 /* AppDelegate.swift */,
 				3A56507D21D517D400B764D3 /* Assets.xcassets */,
@@ -145,20 +157,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		3A78B64421D5BC80006749E7 /* View Controllers */ = {
+		3A78B64421D5BC80006749E7 /* Pro Details */ = {
 			isa = PBXGroup;
 			children = (
-				3A78B64521D5BC93006749E7 /* Cells */,
 				3A5650A721D56C4900B764D3 /* ProDetailsViewController.swift */,
-				3A56509D21D51D9300B764D3 /* ProsTableViewController.swift */,
 			);
-			path = "View Controllers";
+			path = "Pro Details";
 			sourceTree = "<group>";
 		};
 		3A78B64521D5BC93006749E7 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				3AF57EAB21D66E75007A0771 /* ProTableViewCell.swift */,
+				3A29FE5A21F3E2090000F1FA /* ProCellViewModel.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -328,6 +339,7 @@
 				3A56509E21D51D9300B764D3 /* ProsTableViewController.swift in Sources */,
 				3A56507721D517D300B764D3 /* AppDelegate.swift in Sources */,
 				3A5650A421D5324900B764D3 /* ProStore.swift in Sources */,
+				3A29FE5B21F3E2090000F1FA /* ProCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,9 +14,10 @@ class ProTableViewCell: UITableViewCell {
     @IBOutlet var ratingInfoLabel: UILabel!
     
     func config(given pro: Pro) {
-        proNameLabel.text = pro.companyName
-        ratingInfoLabel.text = pro.ratingInformation
-        ratingInfoLabel.textColor = pro.ratingInfoColor
+        let proCellViewModel = ProCellViewModel(pro: pro)
+        proNameLabel.text = proCellViewModel.pro.companyName
+        ratingInfoLabel.text = proCellViewModel.pro.ratingInformation
+        ratingInfoLabel.textColor = proCellViewModel.ratingInfoColor
     }
     
 }
