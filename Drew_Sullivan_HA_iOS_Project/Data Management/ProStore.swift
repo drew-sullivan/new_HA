@@ -24,44 +24,32 @@ public class ProStore {
         return instance
     }()
     
-    public var numPros: Int {
-        return pros.count
-    }
-    
-    public var numSections: Int {
-        return prosGroupedBySpecialty.count
-    }
-    
-    public func pro(forIndex index: Int) -> Pro {
+    func pro(forIndex index: Int) -> Pro {
         return pros[index]
     }
     
-    public func getPros() -> [Pro] {
-        return pros
-    }
-    
-    public func numPros(inSection index: Int) -> Int {
+    func numPros(inSection index: Int) -> Int {
         return prosGroupedBySpecialty[index].1.count
     }
     
-    public func section(forIndex index: Int) -> String {
+    func section(forIndex index: Int) -> String {
         return prosGroupedBySpecialty[index].0
     }
     
     //MARK: - Filtering
-    public func getFilteredPros() -> [Pro] {
+    func getFilteredPros() -> [Pro] {
         return filteredPros
     }
     
-    public func filteredPro(forIndex index: Int) -> Pro {
+    func filteredPro(forIndex index: Int) -> Pro {
         return filteredPros[index]
     }
     
-    public func setFilteredPros(_ filteredPros: [Pro]) {
+    func setFilteredPros(_ filteredPros: [Pro]) {
         self.filteredPros = filteredPros
     }
     
-    public func sortPros(by sortingType: SortingType) {
+    func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
             pros.sort { $0.companyName < $1.companyName }

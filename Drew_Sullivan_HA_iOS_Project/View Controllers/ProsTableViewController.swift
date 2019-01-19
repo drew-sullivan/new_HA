@@ -49,7 +49,7 @@ class ProsTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return proStore.numSections
+        return proStore.prosGroupedBySpecialty.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -85,9 +85,9 @@ class ProsTableViewController: UITableViewController {
     
     private func getMultipleProsWithCheckForFiltering() -> [Pro] {
         if userIsCurrentlyFiltering() {
-            return proStore.getFilteredPros()
+            return proStore.filteredPros
         }
-        return proStore.getPros()
+        return proStore.pros
     }
     
     //MARK: - Helpers for Configuring
@@ -152,7 +152,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
     }
     
     private func filterProsBySearchText(_ searchText: String, scope: String = "All") {
-        let filteredPros = proStore.getPros().filter { (pro: Pro) -> Bool in
+        let filteredPros = proStore.pros.filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }
         proStore.setFilteredPros(filteredPros)
