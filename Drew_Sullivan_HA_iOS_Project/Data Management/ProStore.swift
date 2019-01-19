@@ -48,7 +48,7 @@ public class ProStore {
         self.filteredPros = filteredPros
     }
     
-    //MARK: - Sorting
+    //MARK: - Helpers
     public func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
@@ -68,27 +68,6 @@ public class ProStore {
         }
     }
     
-    // Opted for readability, despite adding duplication
-    public func sortFilteredPros(by sortingType: SortingType) {
-        switch sortingType {
-        case .companyName:
-            filteredPros.sort { $0.companyName < $1.companyName }
-        case .rating:
-            filteredPros.sort {
-                let lhsRating = Double($0.compositeRating) ?? 0.0
-                let rhsRating = Double($1.compositeRating) ?? 0.0
-                return rhsRating < lhsRating
-            }
-        case .numRatings:
-            filteredPros.sort {
-                let lhsNumRatings = Int($0.ratingCount) ?? 0
-                let rhsNumRatings = Int($1.ratingCount) ?? 0
-                return rhsNumRatings < lhsNumRatings
-            }
-        }
-    }
-    
-    //MARK: - Helpers
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
