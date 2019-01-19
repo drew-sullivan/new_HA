@@ -81,14 +81,6 @@ class ProsTableViewController: UITableViewController {
         return proStore.getPros()
     }
     
-    private func sortProsWithCheckForFiltering(by sortingType: SortingType) {
-        if self.userIsCurrentlyFiltering() {
-            self.proStore.sortFilteredPros(by: sortingType)
-        } else {
-            self.proStore.sortPros(by: sortingType)
-        }
-    }
-    
     //MARK: - Helpers for Configuring
     private func configureSearchController() {
         searchController = UISearchController(searchResultsController: nil)
@@ -110,17 +102,17 @@ class ProsTableViewController: UITableViewController {
         let ac = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
         let sortByCompanyNameAction = UIAlertAction(title: SortingType.companyName.rawValue, style: .default) { _ in
-            self.sortProsWithCheckForFiltering(by: .companyName)
+            self.proStore.sortPros(by: .companyName)
             self.tableView.reloadData()
         }
         
         let sortByRatingAction = UIAlertAction(title: SortingType.rating.rawValue, style: .default) { _ in
-            self.sortProsWithCheckForFiltering(by: .rating)
+            self.proStore.sortPros(by: .rating)
             self.tableView.reloadData()
         }
         
         let sortByNumRatingAction = UIAlertAction(title: SortingType.numRatings.rawValue, style: .default) { _ in
-            self.sortProsWithCheckForFiltering(by: .numRatings)
+            self.proStore.sortPros(by: .numRatings)
             self.tableView.reloadData()
         }
         
