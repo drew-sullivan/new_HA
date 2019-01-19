@@ -12,6 +12,8 @@ public class ProStore {
     
     private var pros = [Pro]()
     private var filteredPros = [Pro]()
+//    private var sections = [String]()
+    private var prosGroupedBySpecialty = [(String, [Pro])]()
     
     private init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
@@ -27,12 +29,24 @@ public class ProStore {
         return pros.count
     }
     
+    public var numSections: Int {
+        return prosGroupedBySpecialty.count
+    }
+    
     public func pro(forIndex index: Int) -> Pro {
         return pros[index]
     }
     
     public func getPros() -> [Pro] {
         return pros
+    }
+    
+    public func section(forIndex index: Int) -> String {
+        return prosGroupedBySpecialty[index].0
+    }
+    
+    public func getSections() -> [String] {
+        return prosGroupedBySpecialty.map { $0.0 }
     }
     
     //MARK: - Filtering
@@ -48,7 +62,6 @@ public class ProStore {
         self.filteredPros = filteredPros
     }
     
-    //MARK: - Helpers
     public func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
@@ -68,17 +81,28 @@ public class ProStore {
         }
     }
     
+    //MARK: - Helpers
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 pros = try JSONDecoder().decode([Pro].self, from: data)
+                groupProsBySpecialty(prosToGroup: pros)
             } else {
                 print("No file at that location")
             }
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    private func groupProsBySpecialty(prosToGroup pros: [Pro]) {
+        var specialtiesAndPros: [String: [Pro]] = [:]
+        for pro in pros {
+            specialtiesAndPros[pro.specialty, default: [Pro]()].append(pro)
+        }
+        let specialtiesProsTupleArray = specialtiesAndPros.sorted { $0.key < $1.key }
+        prosGroupedBySpecialty = specialtiesProsTupleArray
     }
 }
 

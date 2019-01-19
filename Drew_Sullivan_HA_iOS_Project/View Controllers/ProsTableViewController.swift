@@ -51,6 +51,25 @@ class ProsTableViewController: UITableViewController {
         return cell
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return proStore.numSections
+    }
+//
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return proStore.section(forIndex: section)
+//    }
+//
+//    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return proStore.getSections()
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        let prosInSection = proStore.getPros().filter { (pro) -> Bool in
+//            pro.specialty == proStore.section(forIndex: section)
+//        }
+//        return prosInSection.count
+//    }
+    
     // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
