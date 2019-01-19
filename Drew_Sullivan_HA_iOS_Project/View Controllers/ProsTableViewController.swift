@@ -11,35 +11,13 @@ import UIKit
 class ProsTableViewController: UITableViewController {
     
     var proStore: ProStore!
-    var searchController: UISearchController!
+    private var searchController: UISearchController!
     
     @IBOutlet var sortButton: UIBarButtonItem!
     
     @IBAction func sort(_ sender: UIBarButtonItem) {
-        let title = "Sort by..."
-        
-        let ac = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        
-        let sortByCompanyNameAction = UIAlertAction(title: SortingType.companyName.description, style: .default) { _ in
-            self.proStore.sortPros(by: .companyName)
-            self.tableView.reloadData()
-        }
-        let sortByRatingAction = UIAlertAction(title: SortingType.rating.description, style: .default) { _ in
-            self.proStore.sortPros(by: .rating)
-            self.tableView.reloadData()
-        }
-        let sortByNumRatingAction = UIAlertAction(title: SortingType.numRatings.description, style: .default) { _ in
-            self.proStore.sortPros(by: .numRatings)
-            self.tableView.reloadData()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
-        
-        ac.addAction(sortByCompanyNameAction)
-        ac.addAction(sortByRatingAction)
-        ac.addAction(sortByNumRatingAction)
-        ac.addAction(cancelAction)
-        
-        present(ac, animated: true)
+        let sortingAlertController = configureSortingAlertController()
+        present(sortingAlertController, animated: true)
     }
     
     
@@ -47,15 +25,8 @@ class ProsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = "Search For a Pro"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 65
+        configureSearchController()
+        configureCellSize()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,28 +35,18 @@ class ProsTableViewController: UITableViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    // MARK: - TableView
+    //MARK: - UITableViewController
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if userIsCurrentlyFiltering() {
-            return proStore.getFilteredPros().count
-        }
-        return proStore.getPros().count
+        let pros = getMultipleProsWithCheckForFiltering()
+        return pros.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
         
-        var pro: Pro
-        if userIsCurrentlyFiltering() {
-            let filteredPros = proStore.getFilteredPros()
-            pro = filteredPros[indexPath.row]
-        } else {
-            pro = proStore.pro(forIndex: indexPath.row)
-        }
+        let pro = getProWithCheckForFiltering(index: indexPath.row)
         
-        cell.proNameLabel.text = pro.companyName
-        cell.ratingInfoLabel.text = pro.ratingInformation
-        cell.ratingInfoLabel.textColor = pro.ratingInfoColor
+        cell.config(given: pro)
         
         return cell
     }
@@ -95,7 +56,7 @@ class ProsTableViewController: UITableViewController {
         switch segue.identifier {
         case "proDetailsSegue":
             if let row = tableView.indexPathForSelectedRow?.row {
-                let pro = proStore.pro(forIndex: row)
+                let pro = getProWithCheckForFiltering(index: row)
                 let proDetailsViewController = segue.destination as! ProDetailsViewController
                 proDetailsViewController.pro = pro
             }
@@ -103,23 +64,92 @@ class ProsTableViewController: UITableViewController {
             return
         }
     }
+    
+    //MARK: - Helpers
+    private func getProWithCheckForFiltering(index: Int) -> Pro {
+        if userIsCurrentlyFiltering() {
+            return proStore.filteredPro(forIndex: index)
+        } else {
+            return proStore.pro(forIndex: index)
+        }
+    }
+    
+    private func getMultipleProsWithCheckForFiltering() -> [Pro] {
+        if userIsCurrentlyFiltering() {
+            return proStore.getFilteredPros()
+        }
+        return proStore.getPros()
+    }
+    
+    private func sortProsWithCheckForFiltering(by sortingType: SortingType) {
+        if self.userIsCurrentlyFiltering() {
+            self.proStore.sortFilteredPros(by: sortingType)
+        } else {
+            self.proStore.sortPros(by: sortingType)
+        }
+    }
+    
+    private func configureSearchController() {
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for a Pro"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
+    private func configureCellSize() {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 65
+    }
+    
+    private func configureSortingAlertController() -> UIAlertController {
+        let title = "Sort by..."
+        
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        let sortByCompanyNameAction = UIAlertAction(title: SortingType.companyName.rawValue, style: .default) { _ in
+            self.sortProsWithCheckForFiltering(by: .companyName)
+            self.tableView.reloadData()
+        }
+        
+        let sortByRatingAction = UIAlertAction(title: SortingType.rating.rawValue, style: .default) { _ in
+            self.sortProsWithCheckForFiltering(by: .rating)
+            self.tableView.reloadData()
+        }
+        
+        let sortByNumRatingAction = UIAlertAction(title: SortingType.numRatings.rawValue, style: .default) { _ in
+            self.sortProsWithCheckForFiltering(by: .numRatings)
+            self.tableView.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        ac.addAction(sortByCompanyNameAction)
+        ac.addAction(sortByRatingAction)
+        ac.addAction(sortByNumRatingAction)
+        ac.addAction(cancelAction)
+        
+        return ac
+    }
 }
 
+//MARK: - UISearchResultsUpdating
 extension ProsTableViewController: UISearchResultsUpdating {
     
-    func userIsCurrentlyFiltering() -> Bool {
+    private func userIsCurrentlyFiltering() -> Bool {
         return searchController.isActive && !isSearchBarEmpty()
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
+    internal func updateSearchResults(for searchController: UISearchController) {
         filterProsBySearchText(searchController.searchBar.text!)
     }
     
-    func isSearchBarEmpty() -> Bool {
+    private func isSearchBarEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
-    func filterProsBySearchText(_ searchText: String, scope: String = "All") {
+    private func filterProsBySearchText(_ searchText: String, scope: String = "All") {
         let filteredPros = proStore.getPros().filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }

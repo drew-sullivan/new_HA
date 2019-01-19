@@ -65,7 +65,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Pros" id="P6c-cb-D9b">
-                        <barButtonItem key="rightBarButtonItem" title="Sort By..." id="vzP-Yj-fF7">
+                        <barButtonItem key="rightBarButtonItem" title="Sort by..." id="vzP-Yj-fF7">
                             <connections>
                                 <action selector="sort:" destination="5UZ-nt-VEC" id="vc4-vV-M5e"/>
                             </connections>

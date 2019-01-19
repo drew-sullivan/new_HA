@@ -36,7 +36,6 @@ public class ProStore {
     }
     
     //MARK: - Filtering
-    
     public func getFilteredPros() -> [Pro] {
         return filteredPros
     }
@@ -50,7 +49,6 @@ public class ProStore {
     }
     
     //MARK: - Sorting
-    
     public func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
@@ -70,8 +68,27 @@ public class ProStore {
         }
     }
     
-    //MARK: - Helpers
+    // Opted for readability, despite adding duplication
+    public func sortFilteredPros(by sortingType: SortingType) {
+        switch sortingType {
+        case .companyName:
+            filteredPros.sort { $0.companyName < $1.companyName }
+        case .rating:
+            filteredPros.sort {
+                let lhsRating = Double($0.compositeRating) ?? 0.0
+                let rhsRating = Double($1.compositeRating) ?? 0.0
+                return rhsRating < lhsRating
+            }
+        case .numRatings:
+            filteredPros.sort {
+                let lhsNumRatings = Int($0.ratingCount) ?? 0
+                let rhsNumRatings = Int($1.ratingCount) ?? 0
+                return rhsNumRatings < lhsNumRatings
+            }
+        }
+    }
     
+    //MARK: - Helpers
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
@@ -86,19 +103,8 @@ public class ProStore {
     }
 }
 
-public enum SortingType: String, CustomStringConvertible {
-    case companyName
-    case rating
-    case numRatings
-    
-    public var description: String {
-        switch self {
-        case .companyName:
-            return "Company Name"
-        case .rating:
-            return "Rating"
-        case .numRatings:
-            return "Number of Ratings"
-        }
-    }
+public enum SortingType: String {
+    case companyName = "Company Name"
+    case rating = "Rating"
+    case numRatings = "Number of Ratings"
 }
