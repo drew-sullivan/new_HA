@@ -11,7 +11,10 @@ import UIKit
 class ProsTableViewController: UITableViewController {
     
     var proStore: ProStore!
+    var searchController: UISearchController!
+    
     @IBOutlet var sortButton: UIBarButtonItem!
+    
     @IBAction func sort(_ sender: UIBarButtonItem) {
         let title = "Sort by..."
         
@@ -44,8 +47,21 @@ class ProsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search For a Pro"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 65
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     // MARK: - TableView
@@ -76,5 +92,11 @@ class ProsTableViewController: UITableViewController {
         default:
             return
         }
+    }
+}
+
+extension ProsTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        // todo
     }
 }
