@@ -70,6 +70,27 @@ public class ProStore {
         }
     }
     
+    func sortGroupContents(by sortingType: SortingType) {
+        for group in groups {
+            switch sortingType {
+            case .companyName:
+                group.pros.sort { $0.companyName < $1.companyName }
+            case .rating:
+                group.pros.sort {
+                    let lhsRating = Double($0.compositeRating) ?? 0.0
+                    let rhsRating = Double($1.compositeRating) ?? 0.0
+                    return rhsRating < lhsRating
+                }
+            case .numRatings:
+                group.pros.sort {
+                    let lhsNumRatings = Int($0.ratingCount) ?? 0
+                    let rhsNumRatings = Int($1.ratingCount) ?? 0
+                    return rhsNumRatings < lhsNumRatings
+                }
+            }
+        }
+    }
+    
     //MARK: - Helpers
     private func readJSONFile(fileName res: String, fileExtension ext: String) {
         do {

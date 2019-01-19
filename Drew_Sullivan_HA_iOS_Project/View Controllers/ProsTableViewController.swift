@@ -108,17 +108,17 @@ class ProsTableViewController: UITableViewController {
         let ac = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
         let sortByCompanyNameAction = UIAlertAction(title: SortingType.companyName.rawValue, style: .default) { _ in
-            self.proStore.sortPros(by: .companyName)
+            self.proStore.sortGroupContents(by: .companyName)
             self.tableView.reloadData()
         }
         
         let sortByRatingAction = UIAlertAction(title: SortingType.rating.rawValue, style: .default) { _ in
-            self.proStore.sortPros(by: .rating)
+            self.proStore.sortGroupContents(by: .rating)
             self.tableView.reloadData()
         }
         
         let sortByNumRatingAction = UIAlertAction(title: SortingType.numRatings.rawValue, style: .default) { _ in
-            self.proStore.sortPros(by: .numRatings)
+            self.proStore.sortGroupContents(by: .numRatings)
             self.tableView.reloadData()
         }
         
