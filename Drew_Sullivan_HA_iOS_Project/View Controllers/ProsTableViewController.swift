@@ -39,9 +39,9 @@ class ProsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
         
-//        let pro = getProWithCheckForFiltering(index: indexPath.row)
-        
-        let pro = proStore.prosGroupedBySpecialty[indexPath.section].1[indexPath.row]
+        let groups = getGroupsWithCheckForFiltering()
+        let group = groups[indexPath.section]
+        let pro = group.pro(byIndex: indexPath.row)
         
         cell.config(given: pro)
         
@@ -49,23 +49,28 @@ class ProsTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return proStore.prosGroupedBySpecialty.count
+        let groups = getGroupsWithCheckForFiltering()
+        return groups.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return proStore.section(forIndex: section)
+        let groups = getGroupsWithCheckForFiltering()
+        return groups[section].name
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return proStore.numPros(inSection: section)
+        let groups = getGroupsWithCheckForFiltering()
+        return groups[section].pros.count
     }
     
     // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "proDetailsSegue":
-            if let row = tableView.indexPathForSelectedRow?.row {
-                let pro = getProWithCheckForFiltering(index: row)
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let groups = getGroupsWithCheckForFiltering()
+                let group = groups[indexPath.section]
+                let pro = group.pros[indexPath.row]
                 let proDetailsViewController = segue.destination as! ProDetailsViewController
                 proDetailsViewController.pro = pro
             }
@@ -75,19 +80,11 @@ class ProsTableViewController: UITableViewController {
     }
     
     //MARK: - Helpers for Filtering
-    private func getProWithCheckForFiltering(index: Int) -> Pro {
+    private func getGroupsWithCheckForFiltering() -> [Group] {
         if userIsCurrentlyFiltering() {
-            return proStore.filteredPro(forIndex: index)
-        } else {
-            return proStore.pro(forIndex: index)
+            return proStore.filteredGroups
         }
-    }
-    
-    private func getMultipleProsWithCheckForFiltering() -> [Pro] {
-        if userIsCurrentlyFiltering() {
-            return proStore.filteredPros
-        }
-        return proStore.pros
+        return proStore.groups
     }
     
     //MARK: - Helpers for Configuring
@@ -143,7 +140,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
         return searchController.isActive && !isSearchBarEmpty()
     }
     
-    internal func updateSearchResults(for searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         filterProsBySearchText(searchController.searchBar.text!)
     }
     
@@ -155,7 +152,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
         let filteredPros = proStore.pros.filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }
-        proStore.setFilteredPros(filteredPros)
+        proStore.updateSections(withPros: filteredPros, context: .filtering)
         
         tableView.reloadData()
     }

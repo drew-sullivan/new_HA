@@ -12,11 +12,15 @@ public class ProStore {
     
     var pros = [Pro]()
     var filteredPros = [Pro]()
-    var prosGroupedBySpecialty = [(String, [Pro])]()
+    var groups = [Group]()
+    var filteredGroups = [Group]()
+
+    var numPros: Int {
+        return groups.reduce(0) { $0 + $1.pros.count }
+    }
     
     private init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
-        pros = pros.sorted { $0.companyName < $1.companyName }
     }
     
     public static let shared: ProStore = {
@@ -24,31 +28,29 @@ public class ProStore {
         return instance
     }()
     
-    func pro(forIndex index: Int) -> Pro {
-        return pros[index]
+    func pro(by sectionIndex: Int, and proIndex: Int) -> Pro {
+        return groups[sectionIndex].pro(byIndex: proIndex)
     }
     
-    func numPros(inSection index: Int) -> Int {
-        return prosGroupedBySpecialty[index].1.count
+    func numPros(inSection sectionIndex: Int) -> Int {
+        return groups[sectionIndex].pros.count
     }
     
-    func section(forIndex index: Int) -> String {
-        return prosGroupedBySpecialty[index].0
+    func section(forIndex sectionIndex: Int) -> Group {
+        return groups[sectionIndex]
+    }
+    
+    func updateSections(withPros pros: [Pro], context: ContextType) {
+        let filteredSections = groupProsBySpecialty(prosToGroup: pros, context: context)
+        self.filteredGroups = filteredSections
     }
     
     //MARK: - Filtering
-    func getFilteredPros() -> [Pro] {
-        return filteredPros
-    }
-    
     func filteredPro(forIndex index: Int) -> Pro {
         return filteredPros[index]
     }
     
-    func setFilteredPros(_ filteredPros: [Pro]) {
-        self.filteredPros = filteredPros
-    }
-    
+    //MARK: - Sorting
     func sortPros(by sortingType: SortingType) {
         switch sortingType {
         case .companyName:
@@ -74,7 +76,8 @@ public class ProStore {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 pros = try JSONDecoder().decode([Pro].self, from: data)
-                groupProsBySpecialty(prosToGroup: pros)
+                let sections = groupProsBySpecialty(prosToGroup: pros, context: .normal)
+                self.groups = sections
             } else {
                 print("No file at that location")
             }
@@ -83,18 +86,41 @@ public class ProStore {
         }
     }
     
-    private func groupProsBySpecialty(prosToGroup pros: [Pro]) {
-        var specialtiesAndPros: [String: [Pro]] = [:]
+    private func groupProsBySpecialty(prosToGroup pros: [Pro], context: ContextType) -> [Group] {
+        //Group pros by specialty
+        var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
-            specialtiesAndPros[pro.specialty, default: [Pro]()].append(pro)
+            groupedPros[pro.specialty, default: [Pro]()].append(pro)
         }
-        let specialtiesProsTupleArray = specialtiesAndPros.sorted { $0.key < $1.key }
-        prosGroupedBySpecialty = specialtiesProsTupleArray
+        
+        //Transform dict into Section objects
+        var prosGroupedBySection = [Group]()
+        let sortedKeys = groupedPros.keys.sorted()
+        for sectionName in sortedKeys {
+            if let pros = groupedPros[sectionName] {
+                let sortedPros = pros.sorted { $0.companyName < $1.companyName }
+                prosGroupedBySection.append(Group(name: sectionName, pros: sortedPros))
+            }
+        }
+        
+//        if context == .normal {
+//            self.sections = prosGroupedBySection
+//        } else if context == .filtering {
+//            self.filteredSections = prosGroupedBySection
+//        }
+        
+        return prosGroupedBySection
     }
+    
 }
 
 public enum SortingType: String {
     case companyName = "Company Name"
     case rating = "Rating"
     case numRatings = "Number of Ratings"
+}
+
+public enum ContextType {
+    case normal
+    case filtering
 }
