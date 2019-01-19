@@ -36,15 +36,12 @@ class ProsTableViewController: UITableViewController {
     }
     
     //MARK: - UITableViewController
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let pros = getMultipleProsWithCheckForFiltering()
-        return pros.count
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
         
-        let pro = getProWithCheckForFiltering(index: indexPath.row)
+//        let pro = getProWithCheckForFiltering(index: indexPath.row)
+        
+        let pro = proStore.prosGroupedBySpecialty[indexPath.section].1[indexPath.row]
         
         cell.config(given: pro)
         
@@ -54,21 +51,14 @@ class ProsTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return proStore.numSections
     }
-//
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return proStore.section(forIndex: section)
-//    }
-//
-//    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return proStore.getSections()
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let prosInSection = proStore.getPros().filter { (pro) -> Bool in
-//            pro.specialty == proStore.section(forIndex: section)
-//        }
-//        return prosInSection.count
-//    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return proStore.section(forIndex: section)
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return proStore.numPros(inSection: section)
+    }
     
     // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

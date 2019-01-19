@@ -10,10 +10,9 @@ import UIKit
 
 public class ProStore {
     
-    private var pros = [Pro]()
-    private var filteredPros = [Pro]()
-//    private var sections = [String]()
-    private var prosGroupedBySpecialty = [(String, [Pro])]()
+    var pros = [Pro]()
+    var filteredPros = [Pro]()
+    var prosGroupedBySpecialty = [(String, [Pro])]()
     
     private init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
@@ -41,12 +40,12 @@ public class ProStore {
         return pros
     }
     
-    public func section(forIndex index: Int) -> String {
-        return prosGroupedBySpecialty[index].0
+    public func numPros(inSection index: Int) -> Int {
+        return prosGroupedBySpecialty[index].1.count
     }
     
-    public func getSections() -> [String] {
-        return prosGroupedBySpecialty.map { $0.0 }
+    public func section(forIndex index: Int) -> String {
+        return prosGroupedBySpecialty[index].0
     }
     
     //MARK: - Filtering
