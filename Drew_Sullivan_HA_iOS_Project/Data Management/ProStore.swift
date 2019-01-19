@@ -28,48 +28,12 @@ public class ProStore {
         return instance
     }()
     
-    func pro(by sectionIndex: Int, and proIndex: Int) -> Pro {
-        return groups[sectionIndex].pro(byIndex: proIndex)
-    }
-    
-    func numPros(inSection sectionIndex: Int) -> Int {
-        return groups[sectionIndex].pros.count
-    }
-    
-    func section(forIndex sectionIndex: Int) -> Group {
-        return groups[sectionIndex]
-    }
-    
-    func updateSections(withPros pros: [Pro]) {
-        let filteredSections = groupProsBySpecialty(prosToGroup: pros)
-        self.filteredGroups = filteredSections
-    }
-    
-    //MARK: - Filtering
-    func filteredPro(forIndex index: Int) -> Pro {
-        return filteredPros[index]
+    func updateGroups(withPros pros: [Pro]) {
+        let filteredGroups = groupProsBySpecialty(prosToGroup: pros)
+        self.filteredGroups = filteredGroups
     }
     
     //MARK: - Sorting
-    func sortPros(by sortingType: SortingType) {
-        switch sortingType {
-        case .companyName:
-            pros.sort { $0.companyName < $1.companyName }
-        case .rating:
-            pros.sort {
-                let lhsRating = Double($0.compositeRating) ?? 0.0
-                let rhsRating = Double($1.compositeRating) ?? 0.0
-                return rhsRating < lhsRating
-            }
-        case .numRatings:
-            pros.sort {
-                let lhsNumRatings = Int($0.ratingCount) ?? 0
-                let rhsNumRatings = Int($1.ratingCount) ?? 0
-                return rhsNumRatings < lhsNumRatings
-            }
-        }
-    }
-    
     func sortGroupContents(by sortingType: SortingType) {
         for group in groups {
             switch sortingType {
@@ -97,8 +61,8 @@ public class ProStore {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 pros = try JSONDecoder().decode([Pro].self, from: data)
-                let sections = groupProsBySpecialty(prosToGroup: pros)
-                self.groups = sections
+                let groups = groupProsBySpecialty(prosToGroup: pros)
+                self.groups = groups
             } else {
                 print("No file at that location")
             }
@@ -114,16 +78,16 @@ public class ProStore {
             groupedPros[pro.specialty, default: [Pro]()].append(pro)
         }
         
-        //Transform dict into Section objects
-        var prosGroupedBySection = [Group]()
+        //Transform dict into Group objects
+        var groups = [Group]()
         let sortedKeys = groupedPros.keys.sorted()
-        for sectionName in sortedKeys {
-            if let pros = groupedPros[sectionName] {
+        for groupName in sortedKeys {
+            if let pros = groupedPros[groupName] {
                 let sortedPros = pros.sorted { $0.companyName < $1.companyName }
-                prosGroupedBySection.append(Group(name: sectionName, pros: sortedPros))
+                groups.append(Group(name: groupName, pros: sortedPros))
             }
         }
-        return prosGroupedBySection
+        return groups
     }
     
 }

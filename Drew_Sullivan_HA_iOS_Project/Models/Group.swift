@@ -1,5 +1,5 @@
 //
-//  Section.swift
+//  Group.swift
 //  Drew_Sullivan_HA_iOS_Project
 //
 //  Created by Drew Sullivan on 1/19/19.
