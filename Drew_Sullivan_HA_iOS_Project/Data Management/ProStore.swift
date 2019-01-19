@@ -40,8 +40,8 @@ public class ProStore {
         return groups[sectionIndex]
     }
     
-    func updateSections(withPros pros: [Pro], context: ContextType) {
-        let filteredSections = groupProsBySpecialty(prosToGroup: pros, context: context)
+    func updateSections(withPros pros: [Pro]) {
+        let filteredSections = groupProsBySpecialty(prosToGroup: pros)
         self.filteredGroups = filteredSections
     }
     
@@ -76,7 +76,7 @@ public class ProStore {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 pros = try JSONDecoder().decode([Pro].self, from: data)
-                let sections = groupProsBySpecialty(prosToGroup: pros, context: .normal)
+                let sections = groupProsBySpecialty(prosToGroup: pros)
                 self.groups = sections
             } else {
                 print("No file at that location")
@@ -86,7 +86,7 @@ public class ProStore {
         }
     }
     
-    private func groupProsBySpecialty(prosToGroup pros: [Pro], context: ContextType) -> [Group] {
+    private func groupProsBySpecialty(prosToGroup pros: [Pro]) -> [Group] {
         //Group pros by specialty
         var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
@@ -102,13 +102,6 @@ public class ProStore {
                 prosGroupedBySection.append(Group(name: sectionName, pros: sortedPros))
             }
         }
-        
-//        if context == .normal {
-//            self.sections = prosGroupedBySection
-//        } else if context == .filtering {
-//            self.filteredSections = prosGroupedBySection
-//        }
-        
         return prosGroupedBySection
     }
     
@@ -118,9 +111,4 @@ public enum SortingType: String {
     case companyName = "Company Name"
     case rating = "Rating"
     case numRatings = "Number of Ratings"
-}
-
-public enum ContextType {
-    case normal
-    case filtering
 }
