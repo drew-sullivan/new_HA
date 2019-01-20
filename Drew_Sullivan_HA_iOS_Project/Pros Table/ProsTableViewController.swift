@@ -122,7 +122,7 @@ class ProsTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         ac.addAction(sortByCompanyNameAction)
         ac.addAction(sortByRatingAction)
