@@ -13,7 +13,7 @@ class ProsTableViewController: UITableViewController {
     @IBOutlet private var sortButton: UIBarButtonItem!
     
     var proStore: ProStore!
-    private var searchController: UISearchController!
+    var searchController: UISearchController!
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -136,12 +136,12 @@ class ProsTableViewController: UITableViewController {
 // MARK: - UISearchResultsUpdating
 extension ProsTableViewController: UISearchResultsUpdating {
     
-    private func userIsCurrentlyFiltering() -> Bool {
-        return searchController.isActive && !isSearchBarEmpty()
-    }
-    
     func updateSearchResults(for searchController: UISearchController) {
         filterProsBySearchText(searchController.searchBar.text!)
+    }
+    
+    private func userIsCurrentlyFiltering() -> Bool {
+        return searchController.isActive && !isSearchBarEmpty()
     }
     
     private func isSearchBarEmpty() -> Bool {
