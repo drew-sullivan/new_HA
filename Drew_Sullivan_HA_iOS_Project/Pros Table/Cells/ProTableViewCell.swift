@@ -10,8 +10,8 @@ import UIKit
 
 class ProTableViewCell: UITableViewCell {
     
-    @IBOutlet var proNameLabel: UILabel!
-    @IBOutlet var ratingInfoLabel: UILabel!
+    @IBOutlet private var proNameLabel: UILabel!
+    @IBOutlet private var ratingInfoLabel: UILabel!
     
     func config(given pro: Pro) {
         let proCellViewModel = ProCellViewModel(pro: pro)

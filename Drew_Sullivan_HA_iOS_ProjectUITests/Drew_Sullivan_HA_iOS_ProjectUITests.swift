@@ -46,5 +46,25 @@ class Drew_Sullivan_HA_iOS_ProjectUITests: XCTestCase {
         app.buttons["EMAIL"].tap()
         app.navigationBars["Details"].buttons["Pros"].tap()
     }
+    
+    func testSortingButtonClickToCompanyNameIsValid() {
+        app.navigationBars["Pros"].buttons["Sort by..."].tap()
+        app.sheets["Sort by..."].buttons["Company Name"].tap()
+    }
+    
+    func testSortingButtonClickToRatingIsValid() {
+        app.navigationBars["Pros"].buttons["Sort by..."].tap()
+        app.sheets["Sort by..."].buttons["Rating"].tap()
+    }
+    
+    func testSortingButtonClickToNumRatingsIsValid() {
+        app.navigationBars["Pros"].buttons["Sort by..."].tap()
+        app.sheets["Sort by..."].buttons["Number of Ratings"].tap()
+    }
+    
+    func testSearchingTriggersSearchBar() {
+        app.searchFields["Search for a Pro"].tap()
+        app.buttons["Cancel"].tap()
+    }
 
 }

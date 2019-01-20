@@ -12,21 +12,41 @@ import XCTest
 
 class ProStoreTests: XCTestCase {
     
-    var proStore: ProStore!
+    var sut: ProStore!
 
     override func setUp() {
         super.setUp()
         
-        proStore = ProStore.shared
+        sut = ProStore.shared
     }
 
     override func tearDown() {
-        proStore = nil
+        sut = nil
         
         super.tearDown()
     }
     
-    func testNumPros() {
-        XCTAssert(proStore.numPros > 0, "ProStore not set")
+    func testNumProsTotal() {
+        XCTAssert(sut.numProsTotal > 0, "ProStore not set")
+    }
+    
+    func testProsAreBrokenIntoGroupsBySpecialty() {
+        let groups = sut.groups
+        for group in groups {
+            for pro in group.pros {
+                XCTAssertTrue(group.name == pro.specialty, "Pro is in incorrect group")
+            }
+        }
+    }
+    
+    func testThereAreNoEmptyGoups() {
+        let groups = sut.groups
+        for group in groups {
+            XCTAssertTrue(group.pros.count > 0, "Pros list is unpopulated")
+        }
+    }
+    
+    func testAllProsIsEqualToNumTotalPros() {
+        XCTAssertEqual(sut.allPros.count, sut.numProsTotal)
     }
 }

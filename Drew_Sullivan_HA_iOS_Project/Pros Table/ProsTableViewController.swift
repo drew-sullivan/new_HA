@@ -10,7 +10,7 @@ import UIKit
 
 class ProsTableViewController: UITableViewController {
     
-    @IBOutlet var sortButton: UIBarButtonItem!
+    @IBOutlet private var sortButton: UIBarButtonItem!
     
     var proStore: ProStore!
     private var searchController: UISearchController!
@@ -30,7 +30,7 @@ class ProsTableViewController: UITableViewController {
     }
     
     // MARK: - IBActions
-    @IBAction func sort(_ sender: UIBarButtonItem) {
+    @IBAction private func sort(_ sender: UIBarButtonItem) {
         let sortingAlertController = configureSortingAlertController()
         present(sortingAlertController, animated: true)
     }
@@ -149,7 +149,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
     }
     
     private func filterProsBySearchText(_ searchText: String, scope: String = "All") {
-        let filteredPros = proStore.pros.filter { (pro: Pro) -> Bool in
+        let filteredPros = proStore.allPros.filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }
         proStore.updateGroups(withPros: filteredPros)

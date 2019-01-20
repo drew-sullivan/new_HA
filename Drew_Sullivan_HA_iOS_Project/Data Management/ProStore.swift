@@ -13,7 +13,8 @@ public class ProStore {
     var groups = [Group]()
     var filteredGroups = [Group]()
     
-    var pros: [Pro] {
+    var allPros: [Pro] {
+        // Get all pros, regardless of group
         var pros = [Pro]()
         for group in groups {
             pros.append(contentsOf: group.pros)
@@ -21,10 +22,11 @@ public class ProStore {
         return pros
     }
 
-    var numPros: Int {
+    var numProsTotal: Int {
         return groups.reduce(0) { $0 + $1.pros.count }
     }
     
+    // MARK: - Initialization
     private init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
     }
@@ -34,6 +36,7 @@ public class ProStore {
         return instance
     }()
     
+    // MARK: - Updating Groups
     func updateGroups(withPros pros: [Pro]) {
         let filteredGroups = organizeIntoGroups(pros)
         self.filteredGroups = filteredGroups
