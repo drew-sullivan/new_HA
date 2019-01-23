@@ -17,7 +17,7 @@ class ProStoreTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        sut = ProStore.shared
+        sut = ProStore()
     }
 
     override func tearDown() {

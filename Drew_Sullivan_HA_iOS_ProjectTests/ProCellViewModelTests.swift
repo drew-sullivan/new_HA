@@ -37,10 +37,6 @@ class ProCellViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-
-    func test() {
-        
-    }
     
     func testRatingInfoColorSetProperly() {
         let rating4AndAbove = "4.0"

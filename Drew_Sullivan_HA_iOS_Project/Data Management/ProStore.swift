@@ -27,14 +27,9 @@ public class ProStore {
     }
     
     // MARK: - Initialization
-    private init() {
+    init() {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
     }
-    
-    static let shared: ProStore = {
-        let instance = ProStore()
-        return instance
-    }()
     
     // MARK: - Updating Groups
     func updateGroups(withPros pros: [Pro]) {

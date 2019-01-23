@@ -22,7 +22,7 @@ class ProsTableViewControllerTests: XCTestCase {
         
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
         sut = storyboard.instantiateViewController(withIdentifier: vcIdentifier) as? ProsTableViewController
-        let proStore = ProStore.shared
+        let proStore = ProStore()
         sut.proStore = proStore
     }
 
