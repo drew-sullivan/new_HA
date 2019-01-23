@@ -37,6 +37,7 @@ class ProDetailsViewController: UIViewController {
     @IBAction private func callButtonTapped(_ sender: UIButton) {
         print("phone = \(pro.phoneNumber)")
     }
+    
     @IBAction private func emailButtonTapped(_ sender: UIButton) {
         print("email = \(pro.email)")
     }

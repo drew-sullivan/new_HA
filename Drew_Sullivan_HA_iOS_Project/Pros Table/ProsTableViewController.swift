@@ -152,7 +152,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
         let filteredPros = proStore.allPros.filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }
-        proStore.updateGroups(withPros: filteredPros)
+        proStore.updateFilteredGroups(withFilteredPros: filteredPros)
         
         tableView.reloadData()
     }

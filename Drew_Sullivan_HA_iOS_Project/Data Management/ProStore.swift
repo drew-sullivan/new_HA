@@ -32,8 +32,8 @@ public class ProStore {
     }
     
     // MARK: - Updating Groups
-    func updateGroups(withPros pros: [Pro]) {
-        let filteredGroups = organizeIntoGroups(pros)
+    func updateFilteredGroups(withFilteredPros filteredPros: [Pro]) {
+        let filteredGroups = groupProsBySpecialty(prosToGroup: filteredPros)
         self.filteredGroups = filteredGroups
     }
     
@@ -65,7 +65,7 @@ public class ProStore {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 let pros = try JSONDecoder().decode([Pro].self, from: data)
-                let groups = organizeIntoGroups(pros)
+                let groups = groupProsBySpecialty(prosToGroup: pros)
                 self.groups = groups
             } else {
                 print("No file at that location")
@@ -75,8 +75,8 @@ public class ProStore {
         }
     }
     
-    private func organizeIntoGroups(_ pros: [Pro]) -> [Group] {
-        // Group pros by specialty
+    private func groupProsBySpecialty(prosToGroup pros: [Pro]) -> [Group] {
+        // Group pros by Pro.specialty
         var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
             groupedPros[pro.specialty, default: [Pro]()].append(pro)
@@ -84,8 +84,8 @@ public class ProStore {
         
         // Transform dict into Group objects
         var groups = [Group]()
-        let sortedKeys = groupedPros.keys.sorted()
-        for groupName in sortedKeys {
+        let sortedGroupNames = groupedPros.keys.sorted()
+        for groupName in sortedGroupNames {
             if let pros = groupedPros[groupName] {
                 let sortedPros = pros.sorted { $0.companyName < $1.companyName }
                 groups.append(Group(name: groupName, pros: sortedPros))
