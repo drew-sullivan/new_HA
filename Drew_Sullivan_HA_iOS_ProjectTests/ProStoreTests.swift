@@ -31,18 +31,18 @@ class ProStoreTests: XCTestCase {
     }
     
     func testProsAreBrokenIntoGroupsBySpecialty() {
-        let groups = sut.groups
+        let groups = sut.specialtyGroups
         for group in groups {
-            for pro in group.pros {
-                XCTAssertTrue(group.name == pro.specialty, "Pro is in incorrect group")
+            for pro in group.prosWithSpecialty {
+                XCTAssertTrue(group.specialtyName == pro.specialty, "Pro is in incorrect group")
             }
         }
     }
     
     func testThereAreNoEmptyGoups() {
-        let groups = sut.groups
+        let groups = sut.specialtyGroups
         for group in groups {
-            XCTAssertTrue(group.pros.count > 0, "Pros list is unpopulated")
+            XCTAssertTrue(group.prosWithSpecialty.count > 0, "Pros list is unpopulated")
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  Group.swift
+//  SpecialtyGroup.swift
 //  Drew_Sullivan_HA_iOS_Project
 //
 //  Created by Drew Sullivan on 1/19/19.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-class Group {
-    var name: String
-    var pros: [Pro]
+class SpecialtyGroup {
+    var specialtyName: String
+    var prosWithSpecialty: [Pro]
     
     init(name: String, pros: [Pro]) {
-        self.name = name
-        self.pros = pros
+        self.specialtyName = name
+        self.prosWithSpecialty = pros
     }
     
     func pro(byIndex index: Int) -> Pro {
-        return pros[index]
+        return prosWithSpecialty[index]
     }
 }

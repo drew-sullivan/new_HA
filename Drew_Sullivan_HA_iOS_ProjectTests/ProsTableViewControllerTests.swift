@@ -48,10 +48,10 @@ class ProsTableViewControllerTests: XCTestCase {
     }
     
     func testSectionsAreSortedByCompanyName() {
-        sut.proStore.sortGroupContents(by: .companyName)
-        let groups = sut.proStore.groups
+        sut.proStore.sortProsWithinSpecialtyGroups(by: .companyName)
+        let groups = sut.proStore.specialtyGroups
         for group in groups {
-            let pros = group.pros
+            let pros = group.prosWithSpecialty
             for i in 1..<pros.count {
                 let lhsProName = pros[i - 1].companyName
                 let rhsProName = pros[i].companyName
@@ -61,10 +61,10 @@ class ProsTableViewControllerTests: XCTestCase {
     }
     
     func testSectionsAreSortedByRating() {
-        sut.proStore.sortGroupContents(by: .rating)
-        let groups = sut.proStore.groups
+        sut.proStore.sortProsWithinSpecialtyGroups(by: .rating)
+        let groups = sut.proStore.specialtyGroups
         for group in groups {
-            let pros = group.pros
+            let pros = group.prosWithSpecialty
             for i in 1..<pros.count {
                 let lhsProRating = Double(pros[i - 1].compositeRating) ?? 0.0
                 let rhsProRating = Double(pros[i].compositeRating) ?? 0.0
@@ -74,10 +74,10 @@ class ProsTableViewControllerTests: XCTestCase {
     }
     
     func testSectionsAreSortedByNumberOfRatings() {
-        sut.proStore.sortGroupContents(by: .rating)
-        let groups = sut.proStore.groups
+        sut.proStore.sortProsWithinSpecialtyGroups(by: .rating)
+        let groups = sut.proStore.specialtyGroups
         for group in groups {
-            let pros = group.pros
+            let pros = group.prosWithSpecialty
             for i in 1..<pros.count {
                 let lhsProNumRatings = Int(pros[i - 1].compositeRating) ?? 0
                 let rhsProNumRatings = Int(pros[i].compositeRating) ?? 0

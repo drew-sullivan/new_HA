@@ -10,20 +10,20 @@ import UIKit
 
 public class ProStore {
     
-    var groups = [Group]()
-    var filteredGroups = [Group]()
+    var specialtyGroups = [SpecialtyGroup]()
+    var filteredSpecialtyGroups = [SpecialtyGroup]()
     
     var allPros: [Pro] {
-        // Get all pros, regardless of group
+        // Get all pros, regardless of specialty group
         var pros = [Pro]()
-        for group in groups {
-            pros.append(contentsOf: group.pros)
+        for specialtyGroup in specialtyGroups {
+            pros.append(contentsOf: specialtyGroup.prosWithSpecialty)
         }
         return pros
     }
 
     var numProsTotal: Int {
-        return groups.reduce(0) { $0 + $1.pros.count }
+        return specialtyGroups.reduce(0) { $0 + $1.prosWithSpecialty.count }
     }
     
     // MARK: - Initialization
@@ -31,26 +31,26 @@ public class ProStore {
         readJSONFile(fileName: "pro_data", fileExtension: "json")
     }
     
-    // MARK: - Updating Groups
-    func updateFilteredGroups(withFilteredPros filteredPros: [Pro]) {
-        let filteredGroups = groupProsBySpecialty(prosToGroup: filteredPros)
-        self.filteredGroups = filteredGroups
+    // MARK: - Updating Specialty Groups After Filtering
+    func updateFilteredSpecialtyGroups(withFilteredPros filteredPros: [Pro]) {
+        let filteredSpecialtyGroups = groupProsBySpecialty(prosToGroup: filteredPros)
+        self.filteredSpecialtyGroups = filteredSpecialtyGroups
     }
     
     // MARK: - Sorting
-    func sortGroupContents(by sortingType: SortingType) {
-        for group in groups {
-            switch sortingType {
+    func sortProsWithinSpecialtyGroups(by proAttribute: ProSortingAttribute) {
+        for specialtyGroup in specialtyGroups {
+            switch proAttribute {
             case .companyName:
-                group.pros.sort { $0.companyName < $1.companyName }
+                specialtyGroup.prosWithSpecialty.sort { $0.companyName < $1.companyName }
             case .rating:
-                group.pros.sort {
+                specialtyGroup.prosWithSpecialty.sort {
                     let lhsRating = Double($0.compositeRating) ?? 0.0
                     let rhsRating = Double($1.compositeRating) ?? 0.0
                     return rhsRating < lhsRating
                 }
             case .numRatings:
-                group.pros.sort {
+                specialtyGroup.prosWithSpecialty.sort {
                     let lhsNumRatings = Int($0.ratingCount) ?? 0
                     let rhsNumRatings = Int($1.ratingCount) ?? 0
                     return rhsNumRatings < lhsNumRatings
@@ -65,8 +65,8 @@ public class ProStore {
             if let file = Bundle.main.url(forResource: res, withExtension: ext) {
                 let data = try Data(contentsOf: file, options: [])
                 let pros = try JSONDecoder().decode([Pro].self, from: data)
-                let groups = groupProsBySpecialty(prosToGroup: pros)
-                self.groups = groups
+                let specialtyGroups = groupProsBySpecialty(prosToGroup: pros)
+                self.specialtyGroups = specialtyGroups
             } else {
                 print("No file at that location")
             }
@@ -75,28 +75,28 @@ public class ProStore {
         }
     }
     
-    private func groupProsBySpecialty(prosToGroup pros: [Pro]) -> [Group] {
+    private func groupProsBySpecialty(prosToGroup pros: [Pro]) -> [SpecialtyGroup] {
         // Group pros by Pro.specialty
         var groupedPros: [String: [Pro]] = [:]
         for pro in pros {
             groupedPros[pro.specialty, default: [Pro]()].append(pro)
         }
         
-        // Transform dict into Group objects
-        var groups = [Group]()
+        // Transform dict into SpecialtyGroup objects
+        var specialtyGroups = [SpecialtyGroup]()
         let sortedGroupNames = groupedPros.keys.sorted()
         for groupName in sortedGroupNames {
             if let pros = groupedPros[groupName] {
                 let sortedPros = pros.sorted { $0.companyName < $1.companyName }
-                groups.append(Group(name: groupName, pros: sortedPros))
+                specialtyGroups.append(SpecialtyGroup(name: groupName, pros: sortedPros))
             }
         }
-        return groups
+        return specialtyGroups
     }
     
 }
 
-enum SortingType: String {
+enum ProSortingAttribute: String {
     case companyName = "Company Name"
     case rating = "Rating"
     case numRatings = "Number of Ratings"

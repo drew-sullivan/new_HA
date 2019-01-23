@@ -39,8 +39,8 @@ class ProsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProTableViewCell", for: indexPath) as! ProTableViewCell
         
-        let groups = getGroupsWithCheckForFiltering()
-        let group = groups[indexPath.section]
+        let specialtyGroups = getSpecialtyGroupsWithCheckForFiltering()
+        let group = specialtyGroups[indexPath.section]
         let pro = group.pro(byIndex: indexPath.row)
         
         cell.config(given: pro)
@@ -49,18 +49,18 @@ class ProsTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        let groups = getGroupsWithCheckForFiltering()
-        return groups.count
+        let specialtyGroups = getSpecialtyGroupsWithCheckForFiltering()
+        return specialtyGroups.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let groups = getGroupsWithCheckForFiltering()
-        return groups[section].name
+        let specialtyGroups = getSpecialtyGroupsWithCheckForFiltering()
+        return specialtyGroups[section].specialtyName
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let groups = getGroupsWithCheckForFiltering()
-        return groups[section].pros.count
+        let specialtyGroups = getSpecialtyGroupsWithCheckForFiltering()
+        return specialtyGroups[section].prosWithSpecialty.count
     }
     
     // MARK: - Segue
@@ -68,9 +68,9 @@ class ProsTableViewController: UITableViewController {
         switch segue.identifier {
         case "proDetailsSegue":
             if let indexPath = tableView.indexPathForSelectedRow {
-                let groups = getGroupsWithCheckForFiltering()
-                let group = groups[indexPath.section]
-                let pro = group.pros[indexPath.row]
+                let specialtyGroups = getSpecialtyGroupsWithCheckForFiltering()
+                let group = specialtyGroups[indexPath.section]
+                let pro = group.prosWithSpecialty[indexPath.row]
                 let proDetailsViewController = segue.destination as! ProDetailsViewController
                 proDetailsViewController.pro = pro
             }
@@ -80,11 +80,11 @@ class ProsTableViewController: UITableViewController {
     }
     
     // MARK: - Helpers for Filtering
-    private func getGroupsWithCheckForFiltering() -> [Group] {
+    private func getSpecialtyGroupsWithCheckForFiltering() -> [SpecialtyGroup] {
         if userIsCurrentlyFiltering() {
-            return proStore.filteredGroups
+            return proStore.filteredSpecialtyGroups
         }
-        return proStore.groups
+        return proStore.specialtyGroups
     }
     
     // MARK: - Helpers for Configuring
@@ -107,18 +107,18 @@ class ProsTableViewController: UITableViewController {
         
         let ac = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
-        let sortByCompanyNameAction = UIAlertAction(title: SortingType.companyName.rawValue, style: .default) { _ in
-            self.proStore.sortGroupContents(by: .companyName)
+        let sortByCompanyNameAction = UIAlertAction(title: ProSortingAttribute.companyName.rawValue, style: .default) { _ in
+            self.proStore.sortProsWithinSpecialtyGroups(by: .companyName)
             self.tableView.reloadData()
         }
         
-        let sortByRatingAction = UIAlertAction(title: SortingType.rating.rawValue, style: .default) { _ in
-            self.proStore.sortGroupContents(by: .rating)
+        let sortByRatingAction = UIAlertAction(title: ProSortingAttribute.rating.rawValue, style: .default) { _ in
+            self.proStore.sortProsWithinSpecialtyGroups(by: .rating)
             self.tableView.reloadData()
         }
         
-        let sortByNumRatingAction = UIAlertAction(title: SortingType.numRatings.rawValue, style: .default) { _ in
-            self.proStore.sortGroupContents(by: .numRatings)
+        let sortByNumRatingAction = UIAlertAction(title: ProSortingAttribute.numRatings.rawValue, style: .default) { _ in
+            self.proStore.sortProsWithinSpecialtyGroups(by: .numRatings)
             self.tableView.reloadData()
         }
         
@@ -152,7 +152,7 @@ extension ProsTableViewController: UISearchResultsUpdating {
         let filteredPros = proStore.allPros.filter { (pro: Pro) -> Bool in
             return pro.companyName.lowercased().contains(searchText.lowercased())
         }
-        proStore.updateFilteredGroups(withFilteredPros: filteredPros)
+        proStore.updateFilteredSpecialtyGroups(withFilteredPros: filteredPros)
         
         tableView.reloadData()
     }
